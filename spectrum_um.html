@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home | SPeCTRUMv4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --um-blue: #003d7a;
+      --um-blue-dark: #002a55;
+      --um-blue-mid: #005bac;
+      --um-yellow: #f7b923;
+      --um-yellow-hover: #e5a800;
+      --nav-bg: #003d7a;
+      --nav-text: #ffffff;
+      --body-bg: #f2f2f2;
+      --card-bg: #ffffff;
+      --text-dark: #333333;
+      --text-mid: #555555;
+      --border: #dddddd;
+      --footer-bg: #003d7a;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-dark);
+      background: var(--body-bg);
+      min-height: 100vh;
+    }
+
+    a { color: var(--um-blue-mid); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── SKIP LINK ─── */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 0;
+      background: var(--um-blue);
+      color: #fff;
+      padding: 8px 16px;
+      z-index: 9999;
+      font-size: 13px;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ─── TOP NAV ─── */
+    header.site-header {
+      background: var(--nav-bg);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 64px;
+    }
+
+    .nav-logo img {
+      height: 44px;
+      display: block;
+    }
+
+    nav.primary-nav { display: flex; align-items: center; gap: 4px; }
+
+    nav.primary-nav > ul {
+      display: flex;
+      list-style: none;
+      gap: 2px;
+      align-items: center;
+    }
+
+    nav.primary-nav > ul > li { position: relative; }
+
+    nav.primary-nav > ul > li > a,
+    nav.primary-nav > ul > li > button {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--nav-text);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 8px 13px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    nav.primary-nav > ul > li > a:hover,
+    nav.primary-nav > ul > li > button:hover,
+    nav.primary-nav > ul > li.open > a,
+    nav.primary-nav > ul > li.open > button {
+      background: rgba(255,255,255,0.15);
+      text-decoration: none;
+    }
+
+    .caret {
+      width: 0; height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid #fff;
+      display: inline-block;
+      margin-left: 2px;
+    }
+
+    /* Dropdown */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      min-width: 210px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      z-index: 999;
+    }
+
+    li.open .dropdown-menu { display: block; }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 9px 16px;
+      color: var(--text-dark);
+      font-size: 13px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.1s;
+    }
+    .dropdown-menu a:last-child { border-bottom: none; }
+    .dropdown-menu a:hover { background: #f0f6ff; text-decoration: none; }
+
+    .nav-login a {
+      background: var(--um-yellow);
+      color: #333;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-size: 13px;
+      transition: background 0.15s;
+      display: block;
+      margin-left: 10px;
+    }
+    .nav-login a:hover { background: var(--um-yellow-hover); text-decoration: none; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ─── CAROUSEL ─── */
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      max-height: 460px;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.6s ease;
+    }
+
+    .carousel-track img {
+      min-width: 100%;
+      width: 100%;
+      object-fit: cover;
+      max-height: 460px;
+      display: block;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      border: none;
+      padding: 14px 18px;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 3px;
+      z-index: 10;
+      transition: background 0.15s;
+    }
+    .carousel-btn:hover { background: rgba(0,0,0,0.7); }
+    .carousel-btn.prev { left: 14px; }
+    .carousel-btn.next { right: 14px; }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+    .carousel-dots span {
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .carousel-dots span.active { background: #fff; }
+
+    /* ─── MAIN CONTENT AREA ─── */
+    .page-body {
+      max-width: 1280px;
+      margin: 28px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 24px;
+    }
+
+    /* ─── ANNOUNCEMENTS CARD ─── */
+    .announcements-block {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .block-header {
+      background: var(--um-blue);
+      color: #fff;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .block-body { padding: 16px; }
+
+    /* Notice items */
+    .notice-item {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+    .notice-item:last-child { margin-bottom: 0; }
+
+    .notice-header {
+      background: #f7f7f7;
+      border-bottom: 1px solid var(--border);
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--um-blue);
+    }
+
+    .notice-icon {
+      width: 30px; height: 30px;
+      background: var(--um-blue);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .notice-icon svg { fill: #fff; width: 16px; height: 16px; }
+
+    .notice-body {
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-dark);
+    }
+
+    .notice-body strong { color: #222; }
+    .notice-body .tag {
+      display: inline-block;
+      background: var(--um-blue);
+      color: #fff;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      margin: 2px;
+      font-weight: 600;
+    }
+
+    /* Site Announcements */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--um-blue-dark);
+      margin: 24px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 3px solid var(--um-yellow);
+    }
+
+    .no-topics {
+      color: #888;
+      font-style: italic;
+      font-size: 13px;
+      padding: 8px 0;
+    }
+
+    /* FAQ */
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .faq-question {
+      background: #f4f8ff;
+      border-bottom: 1px solid var(--border);
+      padding: 11px 16px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--um-blue-dark);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    .faq-question:hover { background: #e8f0fd; }
+    .faq-answer {
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--text-mid);
+      display: none;
+    }
+    .faq-answer.open { display: block; }
+    .faq-toggle { font-size: 18px; color: var(--um-blue); font-weight: 400; }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+    .sidebar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      background: var(--um-blue);
+      color: #fff;
+      padding: 9px 14px;
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+
+    .sidebar-body { padding: 14px; font-size: 13px; line-height: 1.7; }
+
+    .sidebar-body .btn-primary {
+      display: inline-block;
+      background: var(--um-yellow);
+      color: #333;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      margin-top: 8px;
+      transition: background 0.15s;
+    }
+    .sidebar-body .btn-primary:hover { background: var(--um-yellow-hover); text-decoration: none; }
+
+    .maintenance-ok {
+      color: #27ae60;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    /* App store badges */
+    .app-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+    .app-badges img { height: 36px; }
+
+    /* ─── FOOTER ─── */
+    footer.site-footer {
+      background: var(--footer-bg);
+      color: rgba(255,255,255,0.85);
+      padding: 28px 20px;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 6px; }
+    .footer-links a { color: rgba(255,255,255,0.75); font-size: 12.5px; }
+    .footer-links a:hover { color: #fff; }
+
+    .footer-not-logged {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.7);
+    }
+    .footer-not-logged a { color: var(--um-yellow); }
+
+    .footer-powered {
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .footer-powered a { color: rgba(255,255,255,0.65); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .page-body { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
+    }
+
+    @media (max-width: 700px) {
+      nav.primary-nav { display: none; flex-direction: column; width: 100%; background: var(--um-blue-dark); position: absolute; top: 64px; left: 0; padding: 12px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+      nav.primary-nav.open { display: flex; }
+      nav.primary-nav > ul { flex-direction: column; width: 100%; gap: 0; }
+      nav.primary-nav > ul > li > a, nav.primary-nav > ul > li > button { width: 100%; padding: 12px 20px; border-radius: 0; }
+      .dropdown-menu { position: static; box-shadow: none; border: none; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); border-radius: 0; }
+      .dropdown-menu a { color: rgba(255,255,255,0.85); border-bottom-color: rgba(255,255,255,0.08); padding-left: 36px; }
+      .dropdown-menu a:hover { background: rgba(255,255,255,0.1); }
+      .hamburger { display: flex; }
+      .nav-login { display: none; }
+      header.site-header { position: relative; }
+    }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#maincontent">Skip to main content</a>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header">
+  <div class="nav-container">
+    <a class="nav-logo" href="https://spectrum.um.edu.my/">
+      <img src="https://spectrum.um.edu.my/pluginfile.php/1/theme_moove/logo/1773646000/Design%20Logo%20SPECTURM%20etc-01.png" alt="SPeCTRUMv4" />
+    </a>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="primary-nav" id="primaryNav">
+      <ul>
+        <li><a href="https://spectrum.um.edu.my/">Home</a></li>
+
+        <li id="ddAssociated">
+          <button onclick="toggleDD('ddAssociated')">Associated Links <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="https://starecs.um.edu.my" target="_blank">UM-ATLAS Student</a></li>
+            <li><a href="https://starecs.um.edu.my" target="_blank">UM-ATLAS Staff</a></li>
+            <li><a href="https://learn.um.edu.my" target="_blank">Learn@UM</a></li>
+            <li><a href="https://futurelearn.com/campus/universiti-malaya" target="_blank">MC@UM</a></li>
+            <li><a href="https://spectrumexam.um.edu.my" target="_blank">SPeCTRUM Exam</a></li>
+            <li><a href="https://dashboard.um.edu.my" target="_blank">SPeCTRUM Report</a></li>
+            <li><a href="https://spectrum.um.edu.my/course/view.php?id=26925">LEAP Initiative</a></li>
+          </ul>
+        </li>
+
+        <li id="ddArchive">
+          <button onclick="toggleDD('ddArchive')">Archive <span class="caret"></span></button>
+          <ul class="dropdown-menu" style="min-width:240px">
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2526sem1/" target="_blank">2025/2026 Sem 1</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2526sem1_pasum/" target="_blank">PASUM 2025/2026 Sem 1</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem3/" target="_blank">2024/2025 Sem 3</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem2/" target="_blank">2024/2025 Sem 2</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem2_pasum/" target="_blank">PASUM 2024/2025 Sem 2</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem1/" target="_blank">2024/2025 Sem 1</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem1_pasum/" target="_blank">PASUM 2024/2025 Sem 1</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2324sem3/" target="_blank">2023/2024 Sem 3</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2324sem2/" target="_blank">2023/2024 Sem 2</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2324sem1/" target="_blank">2023/2024 Sem 1</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2223sem3/" target="_blank">2022/2023 Sem 3</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2223sem2/" target="_blank">2022/2023 Sem 2</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2223sem1/" target="_blank">2022/2023 Sem 1</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2122sem3/" target="_blank">2021/2022 Sem 3</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2122sem2/" target="_blank">2021/2022 Sem 2</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2122sem1/" target="_blank">2021/2022 Sem 1</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2122sem1_pasum/" target="_blank">PASUM 2021/2022 Sem 1</a></li>
+            <li><a href="https://archive-spectrum.um.edu.my/sess2021sem3/" target="_blank">2020/2021 Sem 3</a></li>
+            <li><a href="https://archive-spectrum.um.edu.my/sess2021sem2/" target="_blank">2020/2021 Sem 2</a></li>
+            <li><a href="https://archive-spectrum.um.edu.my/sess2021sem2_pasum/" target="_blank">PASUM 2020/2021 Sem 2</a></li>
+            <li><a href="https://archive-spectrum.um.edu.my/sess2021sem1/" target="_blank">2020/2021 Sem 1</a></li>
+          </ul>
+        </li>
+
+        <li><a href="https://www.um.edu.my/privacy-policy/disclaimer" target="_blank">Disclaimer</a></li>
+      </ul>
+
+      <div class="nav-login">
+        <a href="https://spectrum.um.edu.my/login/index.php">Log in</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ─── CAROUSEL ─── -->
+<div class="carousel-wrapper" id="carousel">
+  <div class="carousel-track" id="carouselTrack">
+    <img src="https://spectrum.um.edu.my/pluginfile.php/1/theme_moove/sliderimage1/1773646000/spectrum%20slide-01.png" alt="Slide 1" />
+    <img src="https://spectrum.um.edu.my/pluginfile.php/1/theme_moove/sliderimage2/1773646000/spectrum%20slide-02.png" alt="Slide 2" />
+    <img src="https://spectrum.um.edu.my/pluginfile.php/1/theme_moove/sliderimage3/1773646000/Spectrum%20Slide%20%281%29.png" alt="Slide 3" />
+  </div>
+  <button class="carousel-btn prev" onclick="moveSlide(-1)">&#8249;</button>
+  <button class="carousel-btn next" onclick="moveSlide(1)">&#8250;</button>
+  <div class="carousel-dots" id="carouselDots">
+    <span class="active" onclick="goToSlide(0)"></span>
+    <span onclick="goToSlide(1)"></span>
+    <span onclick="goToSlide(2)"></span>
+  </div>
+</div>
+
+<!-- ─── MAIN ─── -->
+<main id="maincontent">
+  <div class="page-body">
+
+    <!-- Left column -->
+    <div class="main-col">
+
+      <!-- Notice 1: AURA Scholar -->
+      <div class="notice-item">
+        <div class="notice-header">
+          <div class="notice-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          </div>
+          Need Help? Try our new AURA Scholar!
+        </div>
+        <div class="notice-body">
+          <p><strong>1-July-2025</strong>: Back ONLINE!</p>
+          <br>
+          <p>🎓 <strong>Need Help with SPeCTRUM? AURA Scholar is Here!</strong> 🤖✨</p>
+          <br>
+          <p>Stuck with login issues? Can't find your course? Need help uploading materials or setting up H5P activities?</p>
+          <br>
+          <p>Whether you're a <strong>lecturer</strong> or <strong>student</strong>, we've got your back! 🙌<br>
+          Try <strong>AURA Scholar</strong>, your AI-powered assistant for:</p>
+          <br>
+          <p>✅ Navigating SPeCTRUM with ease<br>
+          ✅ Course visibility problems<br>
+          ✅ Online assignments, exams &amp; group work<br>
+          ✅ Uploading &amp; managing content as a lecturer<br>
+          ✅ Using SPeCTRUM ODL &amp; SIM resources<br>
+          ✅ H5P, course view settings &amp; more<br>
+          ✅ Knowing who to contact for urgent issues</p>
+          <br>
+          <p>💬 Ask anything. Get instant answers.<br>
+          👉 Just start with: <strong>"Hi AURA..."</strong></p>
+          <br>
+          <p>
+            <span class="tag">#SPeCTRUMUM</span>
+            <span class="tag">#DigitalLearningUM</span>
+            <span class="tag">#UMSupport</span>
+            <span class="tag">#AURAScholar</span>
+            <span class="tag">#TeachingTools</span>
+            <span class="tag">#ODLatUM</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Notice 2: Missing Courses -->
+      <div class="notice-item">
+        <div class="notice-header">
+          <div class="notice-icon">
+            <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+          </div>
+          MISSING COURSES IN SPeCTRUM??
+        </div>
+        <div class="notice-body">
+          <p><strong>MISSING COURSES IN SPeCTRUM / RECENTLY CHANGE OCCURRENCE/GROUP?</strong></p>
+          <hr style="margin:10px 0;border:none;border-top:1px solid #eee;">
+          <p>Dear students, please make sure you have completed the <strong>Confirmation of Registration</strong> in the MAYA portal to ensure that your courses remain in SPeCTRUM.</p>
+          <br>
+          <p>Missing courses will reappear on SPeCTRUM within 24 hours after the Confirmation of Registration.</p>
+          <br>
+          <p>Alternatively, you can click this button <a href="https://spectrum.um.edu.my/blocks/mayasync/view.php"><strong>Get Course(s) from MAYA</strong></a> or on the right navigation bar.</p>
+          <br>
+          <p>If any of your courses are missing or wrong group, please follow these steps:</p>
+          <br>
+          <ol style="padding-left:20px;line-height:2">
+            <li>Go to Home / Dashboard / My Courses</li>
+            <li>Click the <strong>GET COURSE(S) FROM MAYA</strong> button in the side drawer.</li>
+            <li>Select the appropriate Semester and Session.</li>
+            <li>Click <strong>UPDATE INTO SPECTRUM</strong> — this step is mandatory.</li>
+            <li>Go to the My Courses page to view your course list. Make sure the Course Overview filter is set to <strong>All</strong>.</li>
+          </ol>
+          <br>
+          <p><em>* Note: this function is now also available for the lecturers.</em><br>
+          <em>** Not applicable for term based courses (Faculty of Medicine Undergraduate Program)</em></p>
+        </div>
+      </div>
+
+      <!-- Site Announcements -->
+      <h2 class="section-title">Site announcements</h2>
+      <p class="no-topics">There are no discussion topics yet in this forum</p>
+
+      <!-- FAQ -->
+      <h2 class="section-title">FAQ</h2>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Missing Courses on SPeCTRUM?
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Dear students, please make sure you have completed the <strong>Confirmation of Registration</strong> in the MAYA portal to ensure that your courses remain in SPeCTRUM.</p>
+          <br>
+          <p>Missing courses will reappear on SPeCTRUM within 24 hours after the Confirmation of Registration.</p>
+          <br>
+          <p><em>*** Not applicable for term based courses (Faculty of Medicine Undergraduate Program)</em></p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          When/How to Get Course(s) from MAYA? (Formerly known as Fetch from MAYA)
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p><strong>When?</strong> After completing Confirmation of Registration in MAYA portal, use this function if your courses do not appear within 24 hours.</p>
+          <br>
+          <p><strong>How?</strong><br>
+          1. Go to Home / Dashboard / My Courses<br>
+          2. Click the GET COURSE(S) FROM MAYA button in the side drawer.<br>
+          3. Select the appropriate Semester and Session.<br>
+          4. Click UPDATE INTO SPECTRUM.<br>
+          5. View your course list with filter set to All.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Login Issues
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p><strong>Q: I'm having trouble logging in. What should I do?</strong></p>
+          <br>
+          <p><strong>A:</strong> If you're experiencing login issues, please follow the steps below:</p>
+          <br>
+          <p><strong>1. Incorrect Username:</strong><br>
+          Please ensure you are logging in with the correct format.<br>
+          Your username should be: <code>username@siswa365.um.edu.my</code> (student) / <code>username@365.um.edu.my</code> (staff)<br>
+          Password: same as SISWAMail / UMMail</p>
+          <br>
+          <p><strong>2. Incorrect Password/Forgot Password:</strong><br>
+          Reset it at: <a href="https://sso.um.edu.my/cas/forgot-id/index.html" target="_blank">Reset Password</a></p>
+          <br>
+          <p><strong>3. Access Guide:</strong><br>
+          Refer to <a href="https://umsitsguide.um.edu.my/applicant/guides_app/guides_general_0006_app.html" target="_blank">Access to UM Systems</a></p>
+          <br>
+          <p><strong>4. Account Blocked:</strong><br>
+          Please submit a helpdesk ticket for further checking and assistance.</p>
+          <br>
+          <p><strong>5. Still Unable to Log In?</strong><br>
+          Submit a helpdesk ticket for further assistance.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Schedule Maintenance?
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p class="maintenance-ok">✅ There is currently no scheduled maintenance.</p>
+          <br>
+          <p>Issues? Please report via <a href="https://helpdesk.um.edu.my" target="_blank">UMHelpdesk</a>.<br>Thanks!</p>
+        </div>
+      </div>
+
+    </div><!-- /main-col -->
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <!-- Get Course from MAYA -->
+      <div class="sidebar-card">
+        <div class="sidebar-header">Get Course(s) from MAYA</div>
+        <div class="sidebar-body">
+          <p>If your courses are missing in SPeCTRUM, sync them directly from the MAYA portal.</p>
+          <a href="https://spectrum.um.edu.my/blocks/mayasync/view.php" class="btn-primary">Get Course(s) from MAYA</a>
+        </div>
+      </div>
+
+      <!-- Contact Us -->
+      <div class="sidebar-card">
+        <div class="sidebar-header">Contact us</div>
+        <div class="sidebar-body">
+          <p>For support and enquiries, please visit:</p>
+          <br>
+          <p>📧 <a href="https://helpdesk.um.edu.my" target="_blank">UMHelpdesk</a></p>
+        </div>
+      </div>
+
+      <!-- Mobile App -->
+      <div class="sidebar-card">
+        <div class="sidebar-header">Get the mobile app</div>
+        <div class="sidebar-body">
+          <p>Access SPeCTRUM on your mobile device via the Moodle app.</p>
+          <div class="app-badges">
+            <a href="https://play.google.com/store/apps/details?id=com.moodle.moodlemobile" target="_blank">
+              <img src="https://spectrum.um.edu.my/theme/moove/pix/store_google.svg" alt="Get it on Google Play" />
+            </a>
+            <a href="https://apps.apple.com/app/id633359593" target="_blank">
+              <img src="https://spectrum.um.edu.my/theme/moove/pix/store_apple.svg" alt="Download on the App Store" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>Contact us</h4>
+      <ul class="footer-links">
+        <li><a href="https://helpdesk.um.edu.my" target="_blank">UMHelpdesk</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Follow us</h4>
+      <ul class="footer-links">
+        <li><a href="https://spectrum.um.edu.my">SPeCTRUM</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-not-logged">
+        You are not logged in. (<a href="https://spectrum.um.edu.my/login/index.php">Log in</a>)
+      </p>
+    </div>
+  </div>
+  <p class="footer-powered">
+    <a href="https://spectrum.um.edu.my/admin/tool/dataprivacy/summary.php">Data retention summary</a>
+    &nbsp;|&nbsp;
+    Powered by <a href="https://moodle.com" target="_blank">Moodle</a>
+  </p>
+</footer>
+
+<script>
+  // ── Hamburger
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const primaryNav = document.getElementById('primaryNav');
+  hamburgerBtn.addEventListener('click', () => primaryNav.classList.toggle('open'));
+
+  // ── Dropdown
+  function toggleDD(id) {
+    const el = document.getElementById(id);
+    const wasOpen = el.classList.contains('open');
+    document.querySelectorAll('li.open').forEach(l => l.classList.remove('open'));
+    if (!wasOpen) el.classList.add('open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('nav')) document.querySelectorAll('li.open').forEach(l => l.classList.remove('open'));
+  });
+
+  // ── Carousel
+  let currentSlide = 0;
+  const track = document.getElementById('carouselTrack');
+  const dots = document.querySelectorAll('#carouselDots span');
+  const totalSlides = 3;
+
+  function updateCarousel() {
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+  }
+
+  function moveSlide(dir) {
+    currentSlide = (currentSlide + dir + totalSlides) % totalSlides;
+    updateCarousel();
+  }
+
+  function goToSlide(n) {
+    currentSlide = n;
+    updateCarousel();
+  }
+
+  // Auto-advance
+  setInterval(() => moveSlide(1), 5000);
+
+  // ── FAQ accordion
+  function toggleFaq(header) {
+    const answer = header.nextElementSibling;
+    const toggle = header.querySelector('.faq-toggle');
+    const isOpen = answer.classList.contains('open');
+    document.querySelectorAll('.faq-answer.open').forEach(a => {
+      a.classList.remove('open');
+      a.previousElementSibling.querySelector('.faq-toggle').textContent = '+';
+    });
+    if (!isOpen) {
+      answer.classList.add('open');
+      toggle.textContent = '−';
+    }
+  }
+</script>
+</body>
+</html>
