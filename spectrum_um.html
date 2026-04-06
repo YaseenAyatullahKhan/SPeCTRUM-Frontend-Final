@@ -15,8 +15,8 @@
       --um-blue-mid: #005bac;
       --um-yellow: #f7b923;
       --um-yellow-hover: #e5a800;
-      --nav-bg: #003d7a;
-      --nav-text: #ffffff;
+      --nav-bg: #ffffff;
+      --nav-text: #333333;
       --body-bg: #f2f2f2;
       --card-bg: #ffffff;
       --text-dark: #333333;
@@ -55,7 +55,8 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      box-shadow: none;
+      border-bottom: 1px solid #dddddd;
     }
 
     .nav-container {
@@ -105,7 +106,7 @@
     nav.primary-nav > ul > li > button:hover,
     nav.primary-nav > ul > li.open > a,
     nav.primary-nav > ul > li.open > button {
-      background: rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.07);
       text-decoration: none;
     }
 
@@ -113,7 +114,7 @@
       width: 0; height: 0;
       border-left: 4px solid transparent;
       border-right: 4px solid transparent;
-      border-top: 5px solid #fff;
+      border-top: 5px solid #333;
       display: inline-block;
       margin-left: 2px;
     }
