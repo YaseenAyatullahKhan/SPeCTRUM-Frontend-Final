@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UMCAS - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Times New Roman', serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* ─── LEFT PANEL: Photo ─── */
+    .left-panel {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .left-panel img.bg-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* UM logo top-left */
+    .um-logo {
+      position: absolute;
+      top: 22px;
+      left: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .um-logo img {
+      height: 60px;
+    }
+
+    .um-logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .um-logo-text span {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+      letter-spacing: 0.3px;
+    }
+
+    /* ─── RIGHT PANEL: Login Form ─── */
+    .right-panel {
+      width: 520px;
+      min-width: 420px;
+      background: #0d1b35;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 52px;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* UMCAS logo */
+    .umcas-logo {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .umcas-logo-text {
+      font-size: 54px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+      justify-content: center;
+    }
+
+    .umcas-logo-text .um {
+      color: #ffffff;
+    }
+
+    .umcas-logo-text .cas {
+      color: #f0a800;
+    }
+
+    /* Gold arc swoosh above the text */
+    .umcas-swoosh {
+      display: block;
+      margin: 0 auto 4px;
+      width: 160px;
+      height: 22px;
+    }
+
+    /* Reflection effect */
+    .umcas-reflection {
+      display: flex;
+      justify-content: center;
+      margin-top: 2px;
+      overflow: hidden;
+      height: 18px;
+    }
+
+    /* Tagline */
+    .login-tagline {
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.55;
+      margin-bottom: 30px;
+    }
+
+    /* Form fields */
+    .form-group {
+      width: 100%;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #c8a84b;
+      color: #ffffff;
+      font-size: 14px;
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px 4px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255,255,255,0.45);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-bottom-color: #f0c050;
+    }
+
+    /* Select styling */
+    .form-group select {
+      color: rgba(255,255,255,0.85);
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c8a84b' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      padding-right: 24px;
+    }
+
+    .form-group select option {
+      background: #0d1b35;
+      color: #ffffff;
+    }
+
+    /* Forgot password */
+    .forgot-link {
+      width: 100%;
+      text-align: left;
+      margin-bottom: 16px;
+    }
+
+    .forgot-link a {
+      color: rgba(255,255,255,0.75);
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .forgot-link a:hover { color: #fff; text-decoration: underline; }
+
+    /* Status label */
+    .status-label {
+      width: 100%;
+      color: rgba(255,255,255,0.85);
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    /* Sign in button */
+    .signin-row {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+
+    .btn-signin {
+      background: #1a78c2;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px 28px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-signin:hover { background: #1565a8; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 800px) {
+      body { flex-direction: column; overflow: auto; }
+      .left-panel { min-height: 220px; flex: none; }
+      .right-panel { width: 100%; min-width: unset; padding: 36px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT: Campus photo -->
+  <div class="left-panel">
+    <!-- Using a UM campus image from Wikimedia Commons (public domain) as placeholder since the original requires auth -->
+    <img class="bg-photo"
+      src="dtc.jpg"
+      alt="Universiti Malaya campus" />
+
+    <!-- UM Logo top-left -->
+    <div class="um-logo">
+      <img src="https://sso.um.edu.my/cas/themes/umcas/public/homeAssets/assets/img/logo.png" alt="Universiti Malaya logo" />
+      <div class="um-logo-text">
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Login form -->
+  <div class="right-panel">
+
+    <!-- UMCAS logo -->
+    <div class="umcas-logo">
+      <img src="UMCAS_logo.png" alt="UMCAS logo" />
+    </div>
+
+    <p class="login-tagline">
+      Please Enter Your<br>
+      UMMail (staff) / Siswa Mail (student) username
+    </p>
+
+    <!-- Username -->
+    <div class="form-group">
+      <input type="text" id="username" placeholder="Username (Eg: siti_laila)" autocomplete="username" />
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+      <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+    </div>
+
+    <!-- Forgot password -->
+    <div class="forgot-link">
+      <a href="https://sso.um.edu.my/cas/forgot-id/index.html" target="_blank">Forgot Password?</a>
+    </div>
+
+    <!-- Status selector -->
+    <p class="status-label">Choose your status: Staff or Student</p>
+    <div class="form-group">
+      <select id="userStatus" name="userStatus">
+        <option value="student" selected>Student</option>
+        <option value="staff">Staff</option>
+      </select>
+    </div>
+
+    <!-- Sign in -->
+    <div class="signin-row">
+      <button class="btn-signin" onclick="handleSignIn()">Sign in</button>
+    </div>
+
+  </div>
+
+  <script>
+    function handleSignIn() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const status = document.getElementById('userStatus').value;
+
+      if (!username || !password) {
+        alert('Please enter your username and password.');
+        return;
+      }
+
+      // In a real implementation this would submit to the CAS endpoint
+      alert(`Signing in as ${status}: ${username}`);
+    }
+
+    // Allow Enter key to trigger sign in
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleSignIn();
+    });
+  </script>
+
+</body>
+</html>
