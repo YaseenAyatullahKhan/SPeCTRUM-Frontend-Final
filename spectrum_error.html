@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Error | SPeCTRUMv4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --um-blue: #003d7a;
+      --um-blue-dark: #002a55;
+      --um-blue-mid: #005bac;
+      --um-yellow: #f7b923;
+      --um-yellow-hover: #e5a800;
+      --nav-bg: #ffffff;
+      --nav-text: #333333;
+      --body-bg: #ffffff;
+      --border: #dddddd;
+      --footer-bg: #003d7a;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      color: #333;
+      background: var(--body-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: var(--um-blue-mid); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── HEADER ─── */
+    header.site-header {
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 64px;
+    }
+
+    .nav-logo img { height: 44px; display: block; }
+
+    nav.primary-nav { display: flex; align-items: center; gap: 4px; }
+    nav.primary-nav > ul { display: flex; list-style: none; gap: 2px; align-items: center; }
+    nav.primary-nav > ul > li { position: relative; }
+
+    nav.primary-nav > ul > li > a,
+    nav.primary-nav > ul > li > button {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--nav-text);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 8px 13px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    nav.primary-nav > ul > li > a:hover,
+    nav.primary-nav > ul > li > button:hover,
+    nav.primary-nav > ul > li.open > a,
+    nav.primary-nav > ul > li.open > button {
+      background: rgba(0,0,0,0.07);
+      text-decoration: none;
+    }
+
+    .caret {
+      width: 0; height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid #333;
+      display: inline-block;
+      margin-left: 2px;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      min-width: 210px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      z-index: 999;
+    }
+    li.open .dropdown-menu { display: block; }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 9px 16px;
+      color: #333;
+      font-size: 13px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.1s;
+    }
+    .dropdown-menu a:last-child { border-bottom: none; }
+    .dropdown-menu a:hover { background: #f0f6ff; text-decoration: none; }
+
+    .nav-login a {
+      background: var(--um-yellow);
+      color: #333;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-size: 13px;
+      transition: background 0.15s;
+      display: block;
+      margin-left: 10px;
+    }
+    .nav-login a:hover { background: var(--um-yellow-hover); text-decoration: none; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #333;
+      border-radius: 2px;
+    }
+
+    /* ─── MAIN CONTENT ─── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .error-box {
+      width: 60%;
+      background: #fff0f0;
+      border-radius: 6px;
+      padding: 28px 32px;
+    }
+
+    .error-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #b91c1c;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .error-title::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23b91c1c'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .error-body {
+      font-size: 13.5px;
+      color: #991b1b;
+      line-height: 1.75;
+    }
+
+    .error-body p { margin-bottom: 8px; }
+    .error-body p:last-child { margin-bottom: 0; }
+
+    .error-body a { color: #b91c1c; text-decoration: underline; }
+    .error-body a:hover { color: #7f1d1d; }
+
+    /* ─── FOOTER ─── */
+    footer.site-footer {
+      background: var(--footer-bg);
+      color: rgba(255,255,255,0.85);
+      padding: 28px 20px;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 6px; }
+    .footer-links a { color: rgba(255,255,255,0.75); font-size: 12.5px; }
+    .footer-links a:hover { color: #fff; }
+
+    .footer-not-logged { font-size: 12.5px; color: rgba(255,255,255,0.7); }
+    .footer-not-logged a { color: var(--um-yellow); }
+
+    .footer-powered {
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .footer-powered a { color: rgba(255,255,255,0.65); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+      .error-box { width: 92%; padding: 20px; }
+      nav.primary-nav { display: none; flex-direction: column; width: 100%; background: #f5f5f5; position: absolute; top: 64px; left: 0; padding: 12px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+      nav.primary-nav.open { display: flex; }
+      nav.primary-nav > ul { flex-direction: column; width: 100%; gap: 0; }
+      nav.primary-nav > ul > li > a, nav.primary-nav > ul > li > button { width: 100%; padding: 12px 20px; border-radius: 0; }
+      .dropdown-menu { position: static; box-shadow: none; border: none; border-top: 1px solid #eee; border-radius: 0; }
+      .dropdown-menu a { padding-left: 36px; }
+      .hamburger { display: flex; }
+      .nav-login { display: none; }
+      header.site-header { position: relative; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header">
+  <div class="nav-container">
+    <a class="nav-logo" href="https://spectrum.um.edu.my/">
+      <img src="https://spectrum.um.edu.my/pluginfile.php/1/theme_moove/logo/1773646000/Design%20Logo%20SPECTURM%20etc-01.png" alt="SPeCTRUMv4" />
+    </a>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="primary-nav" id="primaryNav">
+      <ul>
+        <li><a href="https://spectrum.um.edu.my/">Home</a></li>
+
+        <li id="ddAssociated">
+          <button onclick="toggleDD('ddAssociated')">Associated Links <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="https://starecs.um.edu.my" target="_blank">UM-ATLAS Student</a></li>
+            <li><a href="https://starecs.um.edu.my" target="_blank">UM-ATLAS Staff</a></li>
+            <li><a href="https://learn.um.edu.my" target="_blank">Learn@UM</a></li>
+            <li><a href="https://futurelearn.com/campus/universiti-malaya" target="_blank">MC@UM</a></li>
+            <li><a href="https://spectrumexam.um.edu.my" target="_blank">SPeCTRUM Exam</a></li>
+            <li><a href="https://dashboard.um.edu.my" target="_blank">SPeCTRUM Report</a></li>
+            <li><a href="https://spectrum.um.edu.my/course/view.php?id=26925">LEAP Initiative</a></li>
+          </ul>
+        </li>
+
+        <li id="ddArchive">
+          <button onclick="toggleDD('ddArchive')">Archive <span class="caret"></span></button>
+          <ul class="dropdown-menu" style="min-width:240px">
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2526sem1/" target="_blank">2025/2026 Sem 1</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2526sem1_pasum/" target="_blank">PASUM 2025/2026 Sem 1</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem3/" target="_blank">2024/2025 Sem 3</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem2/" target="_blank">2024/2025 Sem 2</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem2_pasum/" target="_blank">PASUM 2024/2025 Sem 2</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem1/" target="_blank">2024/2025 Sem 1</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2425sem1_pasum/" target="_blank">PASUM 2024/2025 Sem 1</a></li>
+            <li><a href="https://archive-spectrumv4.um.edu.my/sess2324sem3/" target="_blank">2023/2024 Sem 3</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2324sem2/" target="_blank">2023/2024 Sem 2</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2324sem1/" target="_blank">2023/2024 Sem 1</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2223sem3/" target="_blank">2022/2023 Sem 3</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2223sem2/" target="_blank">2022/2023 Sem 2</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2223sem1/" target="_blank">2022/2023 Sem 1</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2122sem3/" target="_blank">2021/2022 Sem 3</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2122sem2/" target="_blank">2021/2022 Sem 2</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2122sem1/" target="_blank">2021/2022 Sem 1</a></li>
+            <li><a href="https://archive-spectrumnew.um.edu.my/sess2122sem1_pasum/" target="_blank">PASUM 2021/2022 Sem 1</a></li>
+            <li><a href="https://archive-spectrum.um.edu.my/sess2021sem3/" target="_blank">2020/2021 Sem 3</a></li>
+            <li><a href="https://archive-spectrum.um.edu.my/sess2021sem2/" target="_blank">2020/2021 Sem 2</a></li>
+            <li><a href="https://archive-spectrum.um.edu.my/sess2021sem2_pasum/" target="_blank">PASUM 2020/2021 Sem 2</a></li>
+            <li><a href="https://archive-spectrum.um.edu.my/sess2021sem1/" target="_blank">2020/2021 Sem 1</a></li>
+          </ul>
+        </li>
+
+        <li><a href="https://www.um.edu.my/privacy-policy/disclaimer" target="_blank">Disclaimer</a></li>
+      </ul>
+
+      <div class="nav-login">
+        <a href="https://spectrum.um.edu.my/login/index.php">Log in</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ─── MAIN ─── -->
+<main>
+  <div class="error-box">
+    <div class="error-title">Error logging in to SPeCTRUM</div>
+    <div class="error-body">
+      <p>Your login attempt could not be completed. This may be due to an invalid username or password, an expired session, or a temporary issue with the authentication service.</p>
+      <p>Please ensure you are using the correct credentials — your username should be in the format <strong>username@siswa365.um.edu.my</strong> (students) or <strong>username@365.um.edu.my</strong> (staff), and your password should match your SISWAMail or UMMail account.</p>
+      <p>If the problem persists, you may try <a href="https://sso.um.edu.my/cas/forgot-id/index.html" target="_blank">resetting your password</a> or contact the IT support team via <a href="https://helpdesk.um.edu.my" target="_blank">UMHelpdesk</a> for further assistance.</p>
+    </div>
+  </div>
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>Contact us</h4>
+      <ul class="footer-links">
+        <li><a href="https://helpdesk.um.edu.my" target="_blank">UMHelpdesk</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Follow us</h4>
+      <ul class="footer-links">
+        <li><a href="https://spectrum.um.edu.my">SPeCTRUM</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-not-logged">
+        You are not logged in. (<a href="https://spectrum.um.edu.my/login/index.php">Log in</a>)
+      </p>
+    </div>
+  </div>
+  <p class="footer-powered">
+    <a href="https://spectrum.um.edu.my/admin/tool/dataprivacy/summary.php">Data retention summary</a>
+    &nbsp;|&nbsp;
+    Powered by <a href="https://moodle.com" target="_blank">Moodle</a>
+  </p>
+</footer>
+
+<script>
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const primaryNav = document.getElementById('primaryNav');
+  hamburgerBtn.addEventListener('click', () => primaryNav.classList.toggle('open'));
+
+  function toggleDD(id) {
+    const el = document.getElementById(id);
+    const wasOpen = el.classList.contains('open');
+    document.querySelectorAll('li.open').forEach(l => l.classList.remove('open'));
+    if (!wasOpen) el.classList.add('open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('nav')) document.querySelectorAll('li.open').forEach(l => l.classList.remove('open'));
+  });
+</script>
+
+</body>
+</html>
