@@ -291,22 +291,48 @@
 
   <script>
     function handleSignIn() {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
-      const status = document.getElementById('userStatus').value;
-
-      if (!username || !password) {
-        alert('Please enter your username and password.');
-        return;
-      }
-
-      // In a real implementation this would submit to the CAS endpoint
-      alert(`Signing in as ${status}: ${username}`);
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        
+        const secureVault = [120, 117, 106, 104, 121, 119, 122, 114, 37, 116, 107, 37, 104, 116, 113, 116, 122, 119, 120];
+    
+        //Basic check for empty fields
+        if (!username || !password) {
+            alert('Please enter your username and password.');
+            return;
+        }
+    
+        //Validate Username
+        if (username !== 'admin') {
+            alert('Invalid credentials.');
+            return;
+        }
+    
+        //Validate Password using ASCII Math Logic
+        let isCorrect = true;
+        if (password.length !== secureVault.length) {
+            isCorrect = false;
+        } else {
+            for (let i = 0; i < password.length; i++) {
+                // Check if the input character + 5 matches our "secure" array
+                if (password.charCodeAt(i) + 5 !== secureVault[i]) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+        }
+    
+        if (isCorrect) {
+            // success: redirect to the loged in page
+            window.location.href = 'spectrum_error.html';
+        } else {
+            alert('Invalid credentials.');
+        }
     }
-
+    
     // Allow Enter key to trigger sign in
     document.addEventListener('keydown', e => {
-      if (e.key === 'Enter') handleSignIn();
+        if (e.key === 'Enter') handleSignIn();
     });
   </script>
 
