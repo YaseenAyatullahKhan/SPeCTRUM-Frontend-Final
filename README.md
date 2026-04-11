@@ -16,7 +16,6 @@
 This repository contains the **source files and configurations** that power Spectrum’s core functionalities. Developers and contributors can:
 - Explore the underlying architecture  
 - Extend features to meet evolving educational needs
-- Access temporarily in configuration mode via username: admin and password: spectrum of colours 
 - Contribute improvements to enhance digital learning
 
 ---
