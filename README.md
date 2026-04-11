@@ -1,4 +1,5 @@
-# Spectrum
+# SPeCTRUM
+*Student Powered e-Collaboration Transforming UM*
 
 **Spectrum** is Universiti Malaya’s official academic management platform, designed to support teaching, learning, and collaboration in a digital environment. It provides a centralized hub where educators can design courses, share resources, and engage students through interactive tools.
 
