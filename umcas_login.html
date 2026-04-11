@@ -15,7 +15,6 @@
       display: flex;
     }
 
-    /* ─── LEFT PANEL: Photo ─── */
     .left-panel {
       position: relative;
       flex: 1;
@@ -30,7 +29,6 @@
       display: block;
     }
 
-    /* UM logo top-left */
     .um-logo {
       position: absolute;
       top: 22px;
@@ -59,7 +57,6 @@
       letter-spacing: 0.3px;
     }
 
-    /* ─── RIGHT PANEL: Login Form ─── */
     .right-panel {
       width: 520px;
       min-width: 420px;
@@ -73,7 +70,6 @@
       z-index: 5;
     }
 
-    /* UMCAS logo */
     .umcas-logo {
       margin-bottom: 30px;
       text-align: center;
@@ -98,7 +94,6 @@
       color: #f0a800;
     }
 
-    /* Gold arc swoosh above the text */
     .umcas-swoosh {
       display: block;
       margin: 0 auto 4px;
@@ -106,7 +101,6 @@
       height: 22px;
     }
 
-    /* Reflection effect */
     .umcas-reflection {
       display: flex;
       justify-content: center;
@@ -115,7 +109,6 @@
       height: 18px;
     }
 
-    /* Tagline */
     .login-tagline {
       color: #ffffff;
       font-size: 20px;
@@ -125,7 +118,6 @@
       margin-bottom: 30px;
     }
 
-    /* Form fields */
     .form-group {
       width: 100%;
       margin-bottom: 20px;
@@ -155,7 +147,6 @@
       border-bottom-color: #f0c050;
     }
 
-    /* Select styling */
     .form-group select {
       color: rgba(255,255,255,0.85);
       appearance: none;
@@ -172,7 +163,6 @@
       color: #ffffff;
     }
 
-    /* Forgot password */
     .forgot-link {
       width: 100%;
       text-align: left;
@@ -188,7 +178,6 @@
 
     .forgot-link a:hover { color: #fff; text-decoration: underline; }
 
-    /* Status label */
     .status-label {
       width: 100%;
       color: rgba(255,255,255,0.85);
@@ -196,7 +185,6 @@
       margin-bottom: 8px;
     }
 
-    /* Sign in button */
     .signin-row {
       width: 100%;
       display: flex;
@@ -220,7 +208,6 @@
 
     .btn-signin:hover { background: #1565a8; }
 
-    /* ─── RESPONSIVE ─── */
     @media (max-width: 800px) {
       body { flex-direction: column; overflow: auto; }
       .left-panel { min-height: 220px; flex: none; }
@@ -230,14 +217,11 @@
 </head>
 <body>
 
-  <!-- LEFT: Campus photo -->
   <div class="left-panel">
-    <!-- Using a UM campus image from Wikimedia Commons (public domain) as placeholder since the original requires auth -->
     <img class="bg-photo"
       src="dtc.jpg"
       alt="Universiti Malaya campus" />
 
-    <!-- UM Logo top-left -->
     <div class="um-logo">
       <img src="https://sso.um.edu.my/cas/themes/umcas/public/homeAssets/assets/img/logo.png" alt="Universiti Malaya logo" />
       <div class="um-logo-text">
@@ -245,10 +229,8 @@
     </div>
   </div>
 
-  <!-- RIGHT: Login form -->
   <div class="right-panel">
 
-    <!-- UMCAS logo -->
     <div class="umcas-logo">
       <img src="UMCAS_logo.png" alt="UMCAS logo" />
     </div>
@@ -258,22 +240,18 @@
       UMMail (staff) / Siswa Mail (student) username
     </p>
 
-    <!-- Username -->
     <div class="form-group">
       <input type="text" id="username" placeholder="Username (Eg: siti_laila)" autocomplete="username" />
     </div>
 
-    <!-- Password -->
     <div class="form-group">
       <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
     </div>
 
-    <!-- Forgot password -->
     <div class="forgot-link">
       <a href="https://sso.um.edu.my/cas/forgot-id/index.html" target="_blank">Forgot Password?</a>
     </div>
 
-    <!-- Status selector -->
     <p class="status-label">Choose your status: Staff or Student</p>
     <div class="form-group">
       <select id="userStatus" name="userStatus">
@@ -282,7 +260,6 @@
       </select>
     </div>
 
-    <!-- Sign in -->
     <div class="signin-row">
       <button class="btn-signin" onclick="handleSignIn()">Sign in</button>
     </div>
@@ -296,25 +273,21 @@
         
         const secureVault = [120, 117, 106, 104, 121, 119, 122, 114, 37, 116, 107, 37, 104, 116, 113, 116, 122, 119, 120];
     
-        //Basic check for empty fields
         if (!username || !password) {
             alert('Please enter your username and password.');
             return;
         }
     
-        //Validate Username
         if (username !== 'admin') {
             alert('Invalid credentials.');
             return;
         }
-    
-        //Validate Password using ASCII Math Logic
+
         let isCorrect = true;
         if (password.length !== secureVault.length) {
             isCorrect = false;
         } else {
             for (let i = 0; i < password.length; i++) {
-                // Check if the input character + 5 matches our "secure" array
                 if (password.charCodeAt(i) + 5 !== secureVault[i]) {
                     isCorrect = false;
                     break;
@@ -323,14 +296,12 @@
         }
     
         if (isCorrect) {
-            // success: redirect to the loged in page
             window.location.href = 'spectrum_error.html';
         } else {
             alert('Invalid credentials.');
         }
     }
     
-    // Allow Enter key to trigger sign in
     document.addEventListener('keydown', e => {
         if (e.key === 'Enter') handleSignIn();
     });
