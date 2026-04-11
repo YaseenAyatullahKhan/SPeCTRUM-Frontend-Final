@@ -268,43 +268,54 @@
 
   <script>
     function handleSignIn() {
+        const btn = document.querySelector('.btn-signin');
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
-        
-        const secureVault = [120, 117, 106, 104, 121, 119, 122, 114, 37, 116, 107, 37, 104, 116, 113, 116, 122, 119, 120];
     
         if (!username || !password) {
             alert('Please enter your username and password.');
             return;
         }
     
-        if (username !== 'admin') {
-            alert('Invalid credentials.');
-            return;
-        }
+        btn.innerText = "Authenticating with Spectrum...";
+        btn.style.background = "#555";
+        btn.disabled = true;
 
-        let isCorrect = true;
-        if (password.length !== secureVault.length) {
-            isCorrect = false;
-        } else {
-            for (let i = 0; i < password.length; i++) {
-                if (password.charCodeAt(i) + 5 !== secureVault[i]) {
-                    isCorrect = false;
-                    break;
+        setTimeout(() => {
+            const secureVault = [120, 117, 106, 104, 121, 119, 122, 114, 37, 116, 107, 37, 104, 116, 113, 116, 122, 119, 120];
+    
+            if (username !== 'admin') {
+                resetButton(btn);
+                alert('Invalid credentials.');
+                return;
+            }
+    
+            let isCorrect = true;
+            if (password.length !== secureVault.length) {
+                isCorrect = false;
+            } else {
+                for (let i = 0; i < password.length; i++) {
+                    if (password.charCodeAt(i) + 5 !== secureVault[i]) {
+                        isCorrect = false;
+                        break;
+                    }
                 }
             }
-        }
     
-        if (isCorrect) {
-            window.location.href = 'spectrum_error.html';
-        } else {
-            alert('Invalid credentials.');
-        }
+            if (isCorrect) {
+                window.location.href = 'error.html';
+            } else {
+                resetButton(btn);
+                alert('Invalid credentials.');
+            }
+        }, 7000);
     }
     
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Enter') handleSignIn();
-    });
+    function resetButton(btn) {
+        btn.innerText = "Sign in";
+        btn.style.background = "#1a78c2";
+        btn.disabled = false;
+    }
   </script>
 
 </body>
